@@ -1,17 +1,28 @@
 streamlit
+
 python-dotenv
+
 gitpython
 
+
+
 langchain
+
 langchain-core
+
 langchain-community
+
 langchain-classic
+
 langchain-text-splitters
-langchain-huggingface
+
+
+
 langchain-groq
 
-sentence-transformers
-chromadb
-torch
-transformers
-huggingface-hub
+langchain-google-genai
+
+google-generativeai
+
+chromadb 
+

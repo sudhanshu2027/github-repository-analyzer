@@ -25,7 +25,7 @@ A Retrieval-Augmented Generation (RAG) application that analyzes any **public Gi
 
 - **Frontend:** Streamlit
 - **LLM:** Groq (`llama-3.3-70b-versatile`)
-- **Embeddings:** HuggingFace (`all-MiniLM-L6-v2`)
+- **Embeddings:** Gemini Embeddings (`gemini-embedding-001`)
 - **Vector Database:** ChromaDB
 - **Framework:** LangChain
 - **Git Operations:** GitPython
@@ -45,36 +45,7 @@ github_repo_analyzer/
 ```
 
 ---
-
-## ⚙️ Installation
-
-Clone the repository:
-
-```bash
-git clone <repository-url>
-cd github_repo_analyzer
-```
-
-Create a virtual environment:
-
-```bash
-python -m venv venv
-```
-
-Activate the virtual environment:
-
-### Windows
-
-```bash
-venv\Scripts\activate
-```
-
-### Linux / macOS
-
-```bash
-source venv/bin/activate
-```
-
+---
 Install dependencies:
 
 ```bash
@@ -84,7 +55,8 @@ pip install -r requirements.txt
 Create a `.env` file:
 
 ```env
-GROQ_API_KEY=your_groq_api_key
+GROQ_API_KEY=groq_api_key
+GOOGLE_API_KEY=gemini_api_key
 ```
 
 ---
@@ -120,14 +92,5 @@ https://github.com/username/repository
 
 ---
 
-## 🔮 Future Improvements
 
-- Private GitHub repository support
-- Repository caching
-- Dependency graph visualization
-- Multi-repository comparison
-- Chat history export
-- Code summarization
-
----
 

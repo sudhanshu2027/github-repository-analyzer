@@ -1,12 +1,14 @@
 import os
+import time
 from dotenv import load_dotenv
+
 
 load_dotenv()
 
 from langchain_groq import ChatGroq
 from langchain_community.document_loaders import DirectoryLoader, TextLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
-from langchain_huggingface import HuggingFaceEmbeddings
+from langchain_google_genai import GoogleGenerativeAIEmbeddings
 from langchain_community.vectorstores import Chroma
 from langchain_classic.chains.retrieval import create_retrieval_chain
 from langchain_classic.chains.combine_documents import (
@@ -24,8 +26,8 @@ class GitHubRepoAnalyzer:
             temperature=0.2,
         )
 
-        self.embeddings = HuggingFaceEmbeddings(
-            model_name="sentence-transformers/all-MiniLM-L6-v2"
+        self.embeddings = GoogleGenerativeAIEmbeddings(
+            model="gemini-embedding-001"
         )
 
         self.vector_store = None
@@ -59,7 +61,7 @@ class GitHubRepoAnalyzer:
            "**/*.md",
            "**/README.md",
 
-           "**/*.json",
+           "**/*package.json",
            "**/*.yaml",
            "**/*.yml",
 
@@ -126,6 +128,7 @@ class GitHubRepoAnalyzer:
                 )
 
                 documents.append(doc)
+                
 
         if not documents:
             raise ValueError(
@@ -148,8 +151,8 @@ class GitHubRepoAnalyzer:
                 " ",
                 "",
             ],
-            chunk_size=1000,
-            chunk_overlap=150,
+            chunk_size=1500,
+            chunk_overlap=200,
         )
 
         chunked_docs = splitter.split_documents(documents)
@@ -160,15 +163,54 @@ class GitHubRepoAnalyzer:
 
     def build_vector_database(self, chunked_docs):
         """
-        Build an in-memory Chroma vector database.
+        Build an in-memory Chroma vector database in batches.
+        This avoids hitting Gemini's free-tier embedding rate limit.
         """
 
         print("Building vector database...")
 
-        self.vector_store = Chroma.from_documents(
-            documents=chunked_docs,
-            embedding=self.embeddings,
-        )
+        BATCH_SIZE = 20
+        WAIT_TIME = 20  # seconds
+
+        self.vector_store = None
+
+        total = len(chunked_docs)
+
+        for i in range(0, total, BATCH_SIZE):
+
+            batch = chunked_docs[i:i + BATCH_SIZE]
+
+            print(
+                f"Embedding batch {i // BATCH_SIZE + 1} "
+                f"({len(batch)} chunks)..."
+            )
+
+            if self.vector_store is None:
+                import uuid
+
+                self.vector_store = Chroma.from_documents(
+                    documents=batch,
+                    embedding=self.embeddings,
+                    collection_name=f"repo_{uuid.uuid4().hex}",
+                )
+
+            else:
+
+                self.vector_store.add_documents(batch)
+
+            processed = min(i + BATCH_SIZE, total)
+
+            print(f"Indexed {processed}/{total} chunks.")
+
+            # Wait before sending the next batch
+            if processed < total:
+
+                print(
+                    f"Waiting {WAIT_TIME} seconds "
+                    "to avoid  rate limits..."
+                )
+
+                time.sleep(WAIT_TIME)
 
         print("Vector database created successfully.")
 
@@ -180,7 +222,7 @@ class GitHubRepoAnalyzer:
         """
 
         retriever = self.vector_store.as_retriever(
-            search_kwargs={"k": 25}
+            search_kwargs={"k": 10}
         )
 
         system_prompt ="""You are an expert Software Architect and Senior Software Engineer.
