@@ -1,4 +1,5 @@
 import os
+import time
 import streamlit as st
 from dotenv import load_dotenv
 
@@ -19,7 +20,7 @@ st.set_page_config(
     layout="wide",
 )
 
-st.title("🤖 GitHub Repository Analyzer")
+st.title(" GitHub Repository Analyzer")
 
 st.markdown(
     """
@@ -164,6 +165,8 @@ if st.session_state.processed:
                 "content": question,
             }
         )
+         
+        
 
         with st.chat_message("user"):
 
@@ -174,12 +177,14 @@ if st.session_state.processed:
             with st.spinner("Thinking..."):
 
                 try:
-
                     answer = st.session_state.analyzer.ask_question(
                         question
                     )
+                    
+
 
                     st.markdown(answer)
+                    st.info(f"⏱ Response Time: {latency:.2f} seconds")
 
                     st.session_state.chat_history.append(
                         {
@@ -187,6 +192,7 @@ if st.session_state.processed:
                             "content": answer,
                         }
                     )
+                    
 
                 except Exception as e:
 

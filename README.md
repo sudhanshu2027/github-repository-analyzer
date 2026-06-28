@@ -1,51 +1,57 @@
 # 🤖 GitHub Repository Analyzer
 
-A Retrieval-Augmented Generation (RAG) application that analyzes any **public GitHub repository** and answers natural language questions about its architecture, execution flow, source code, APIs, authentication, and database.
+A Retrieval-Augmented Generation (RAG) application that analyzes any public GitHub repository and answers natural language questions about its codebase, architecture, APIs, execution flow, authentication, and database interactions.
 
 ## 🚀 Features
 
-- Analyze any public GitHub repository using its URL
-- Automatic repository cloning
-- Semantic code chunking
-- In-memory Chroma vector database
-- Natural language Q&A using Groq LLM
-- Explains:
-  - Project architecture
-  - Folder structure
-  - Execution flow
-  - API routes
-  - Authentication flow
-  - Database usage
-  - Socket communication
-  - Frontend–Backend interaction
+* Analyze any public GitHub repository via URL
+* Automatic repository cloning and indexing
+* Semantic code chunking with vector embeddings
+* In-memory ChromaDB vector storage
+* Natural language Q&A powered by Groq LLM
+
+### Supported Analysis
+
+* Project architecture
+* Folder structure
+* Execution flow
+* API routes and endpoints
+* Authentication mechanisms
+* Database interactions
+* Socket communication
+* Frontend–backend integration
 
 ---
 
 ## 🛠️ Tech Stack
 
-- **Frontend:** Streamlit
-- **LLM:** Groq (`llama-3.3-70b-versatile`)
-- **Embeddings:** Gemini Embeddings (`gemini-embedding-001`)
-- **Vector Database:** ChromaDB
-- **Framework:** LangChain
-- **Git Operations:** GitPython
+| Component       | Technology                                 |
+| --------------- | ------------------------------------------ |
+| Frontend        | Streamlit                                  |
+| LLM             | Groq (Llama 3.3 70B Versatile)             |
+| Embeddings      | Gemini Embeddings (`gemini-embedding-001`) |
+| Vector Database | ChromaDB                                   |
+| Framework       | LangChain                                  |
+| Git Operations  | GitPython                                  |
 
 ---
 
 ## 📂 Project Structure
 
-```
+```text
 github_repo_analyzer/
-│── app.py
-│── repo_analyzer.py
-│── github_utils.py
-│── requirements.txt
-│── .env
+├── app.py
+├── repo_analyzer.py
+├── github_utils.py
+├── requirements.txt
+├── .env
 └── README.md
 ```
 
 ---
----
+
+## ⚙️ Installation
+
 Install dependencies:
 
 ```bash
@@ -55,13 +61,13 @@ pip install -r requirements.txt
 Create a `.env` file:
 
 ```env
-GROQ_API_KEY=groq_api_key
-GOOGLE_API_KEY=gemini_api_key
+GROQ_API_KEY=your_groq_api_key
+GOOGLE_API_KEY=your_google_api_key
 ```
 
 ---
 
-## ▶️ Run the Application
+## ▶️ Run
 
 ```bash
 streamlit run app.py
@@ -69,28 +75,32 @@ streamlit run app.py
 
 ---
 
-## 💡 How to Use
+## 💡 Usage
 
-1. Enter the URL of a public GitHub repository.
+1. Enter a public GitHub repository URL.
 2. Click **Analyze**.
-3. Wait for the repository to be indexed.
-4. Ask questions such as:
-   - Explain the project architecture.
-   - Describe the execution flow.
-   - How does authentication work?
-   - Which files handle API routes?
-   - Explain the database schema.
-   - Explain the frontend and backend interaction.
+3. Wait for indexing to complete.
+4. Ask questions about the repository.
+
+### Example Queries
+
+* Explain the project architecture.
+* Describe the execution flow.
+* How does authentication work?
+* Which files handle API routes?
+* Explain the database schema.
+* How do the frontend and backend communicate?
 
 ---
 
 ## 📌 Example Repository
 
-```
+```text
 https://github.com/username/repository
 ```
 
 ---
 
+## 🖼️ Demo
 
-
+![GitHub Repository Analyzer Demo](image.png)
