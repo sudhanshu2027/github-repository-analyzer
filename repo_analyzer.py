@@ -123,7 +123,7 @@ class GitHubRepoAnalyzer:
 
                 doc.page_content = (
                     f"FILE: {filename}\n"
-                    f"PATH: {source}\n\n"
+                    f"PATH: {source}\n\n" 
                     f"{doc.page_content}"
                 )
 

@@ -184,7 +184,7 @@ if st.session_state.processed:
 
 
                     st.markdown(answer)
-                    st.info(f"⏱ Response Time: {latency:.2f} seconds")
+                     
 
                     st.session_state.chat_history.append(
                         {
